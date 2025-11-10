@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,5 +15,24 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('home');
 });
+
+Auth::routes();
+
+Route::get('/list', [App\Http\Controllers\ProductController::class, 'showList'])->name('list');
+//商品一覧画面
+Route::get('/regist', [App\Http\Controllers\ProductController::class, 'showRegistForm'])->name('regist');
+//新規登録画面フォーム
+Route::post('/regist', [App\Http\Controllers\ProductController::class, 'registSubmit'])->name('submit');
+//新規登録画面
+Route::get('/modification/{id}', [App\Http\Controllers\ProductController::class, 'showModificationForm'])->name('modification');
+//編集フォーム
+Route::put('modification/{id}', [App\Http\Controllers\ProductController::class, 'update'])->name('modification.update');
+//更新処理
+Route::get('/show/{id}', [App\Http\Controllers\ProductController::class, 'show'])->name('show');
+//詳細画面
+Route::delete('/products/{id}', [App\Http\Controllers\ProductController::class, 'destroy'])->name('destroy');
+//削除ボタン
+Route::get('/products', [App\Http\Controllers\ProductController::class, 'index'])->name('search');
+//検索
