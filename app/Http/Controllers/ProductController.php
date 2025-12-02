@@ -13,8 +13,8 @@ class ProductController extends Controller
     public function showList()
     {
 
-        $model = new Product();
-        $products = $model->getList();
+
+        $products = Product::with('company')->get();
         $companies = Company::all();
 
         return view('list', [
@@ -30,25 +30,37 @@ class ProductController extends Controller
         return view('regist', compact('companies'));
     }
 
+    //登録処理
     public function registSubmit(ProductRequest $request)
     {
 
+        $image = $request->file('image');
+        $image_path = null;
+
+        if ($image) {
+            $file_name = $image->getClientOriginalName();
+            $image->storeAs('public/images', $file_name);
+            $image_path = 'storage/images/' . $file_name;
+        }
+
+        $model = new Product();
 
         DB::beginTransaction();
 
         try {
-            // 登録処理呼び出し
-            $model = new Product();
-            $model->registProduct($request);
+
+            $model->registProduct($request, $image_path);
 
             DB::commit();
+
         } catch (\Exception $e) {
-            DB::rollback();
+            DB::rollBack();
             return back();
         }
 
+        return redirect()->route('list');
 
-        return redirect(route('list'));
+
     }
 
     public function showModificationForm($id)
@@ -66,12 +78,28 @@ class ProductController extends Controller
         try {
             $product = Product::findOrFail($id);
 
+            if ($request->hasFile('image')) {
+
+                $image = $request->file('image');
+
+                // MIME を判定できないファイルだった場合 Laravel が自動で例外
+                $file_name = $image->getClientOriginalName();
+                $image->storeAs('public/images', $file_name);
+                $image_path = 'storage/images/' . $file_name;
+
+            } else {
+                // 画像なし（変更なし）の場合 → 現在の画像をそのまま
+                $image_path = $product->image_path;
+            }
+
+
             $product->update([
-                'image_path' => $request->image_path,
+                'image_path' => $image_path,
                 'product_name' => $request->product_name,
                 'price' => $request->price,
                 'stock' => $request->stock,
                 'company_id' => $request->company_id,
+                'comment' => $request->comment,
             ]);
 
 
@@ -109,7 +137,7 @@ class ProductController extends Controller
             $query->where('product_name', 'like', '%' . $request->product_name . '%');
         }
 
-        // 検索フォームメーカー
+        // 検索フォーム
         if ($request->filled('company_id')) {
             $query->where('company_id', $request->company_id);
         }
@@ -119,4 +147,7 @@ class ProductController extends Controller
 
         return view('list', compact('products', 'companies'));
     }
+
+
+
 }

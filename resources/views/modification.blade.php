@@ -4,7 +4,7 @@
     <div class="container">
         <div class="row">
             <h1>商品情報編集画面</h1>
-            <form action="{{ route('modification.update', $product->id) }}" method="post">
+            <form action="{{ route('modification.update', $product->id) }}" method="post" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
 
@@ -67,6 +67,11 @@
 
                 <div class="form-group">
                     <label for="image">商品画像</label>
+                    @if ($product->image_path)
+                        <img src="{{ asset($product->image_path) }}" width="150">
+                    @else
+                        <p>画像なし</p>
+                    @endif
                     <input type="file" class="form-control" id="image" name="image">
                 </div>
 

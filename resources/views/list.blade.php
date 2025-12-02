@@ -422,7 +422,7 @@
             <div class="links">
                 <table>
                     <h1>商品一覧画面</h1>
-                    <form action="{{ route('search') }}" method="GET" class="mb-4">
+                    <form action="{{ route('list') }}" method="GET" class="mb-4">
                         <div style="margin-bottom: 10px;">
                             <label for="product_name">商品名：</label>
                             <input type="text" name="product_name" id="product_name"
@@ -460,7 +460,13 @@
                         @foreach ($products as $product)
                             <tr>
                                 <td>{{ $product->id }}</td>
-                                <td>{{ $product->image_path }}</td>
+                                <td>
+                                    @if ($product->image_path)
+                                        <img src="{{ asset($product->image_path) }}" alt="商品画像" width="80">
+                                    @else
+                                        画像なし
+                                    @endif
+                                </td>
                                 <td>{{ $product->product_name }}</td>
                                 <td>{{ $product->price }}</td>
                                 <td>{{ $product->stock }}</td>

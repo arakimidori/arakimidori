@@ -9,6 +9,16 @@ use Illuminate\Support\Facades\DB;
 class Product extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+            'product_name',
+            'price',
+            'stock',
+            'comment',
+            'company_id',
+            'image_path',
+        ];
+
     public function getList()
     {
         $products = DB::table('products')
@@ -19,26 +29,23 @@ class Product extends Model
         return $products;
     }
 
-    protected $fillable = ['product_name', 'company_name', 'price', 'stock', 'comment'];
+
 
     public function company()
     {
         return $this->belongsTo(Company::class, 'company_id', 'id');
     }
 
-    public function registProduct($data)
+    public function registProduct($request, $image_path)
     {
-        // 登録処理
-
         DB::table('products')->insert([
-            'image_path' => $data-> image_path,
-            'product_name' => $data-> product_name,
-            'price' => $data-> price,
-            'stock' => $data-> stock,
-            'company_id' => $data->company_id,
+            'image_file' => $image_path,
+            'product_name' => $request->product_name,
+            'price' => $request->price,
+            'stock' => $request->stock,
+            'comment' => $request->comment,
+            'company_id' => $request->company_id,
         ]);
-
-
     }
 
     public function getDetail($id)
@@ -53,3 +60,4 @@ class Product extends Model
     }
 
 }
+//新規登録画面（regist.blade.php）に登録した画像を一覧画面（list.blade.php）にも表示されるようにしたい。また、編集画面（modification.blade.php）で、もしまだ画像が登録していないものに画像追加があれば追加したら一覧画面に表示されるようにしたい。
