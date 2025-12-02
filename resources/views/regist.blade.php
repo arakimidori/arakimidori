@@ -77,13 +77,3 @@
         </div>
     </div>
 @endsection
-
-お疲れ様です。２６日に１オン１をやった際にＳＴＥＰ５ー４を参考にすればできるとアドバイスをいただきましたがいまだにうまくいきません。
-まず画像１の<form action="route('regist')" method="POST" enctype='multipart/form-data'>
-    <input type="file" name="image">
-    <input type="submit">
-</form>はｒｅｇｉｓｔ．ｂｌａｄｅ．ｐｈｐ　に書くものだと判断し画像２．３のようにＳｔｅｐ７に
-合うように書きました。
-次に画像４ですが画像５のようにルートにこのように組み込みました
-次に画像六はProductcontrollerに画像７のようにいれました。
-最後に画像８をproduct.phpに画像９のように入れました。ここまででどこが間違っていますでしょうか。

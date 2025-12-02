@@ -60,4 +60,3 @@ class Product extends Model
     }
 
 }
-//新規登録画面（regist.blade.php）に登録した画像を一覧画面（list.blade.php）にも表示されるようにしたい。また、編集画面（modification.blade.php）で、もしまだ画像が登録していないものに画像追加があれば追加したら一覧画面に表示されるようにしたい。
