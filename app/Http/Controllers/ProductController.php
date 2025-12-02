@@ -82,14 +82,14 @@ class ProductController extends Controller
 
                 $image = $request->file('image');
 
-                // MIME を判定できないファイルだった場合 Laravel が自動で例外
+
                 $file_name = $image->getClientOriginalName();
                 $image->storeAs('public/images', $file_name);
                 $image_path = 'storage/images/' . $file_name;
 
             } else {
-                // 画像なし（変更なし）の場合 → 現在の画像をそのまま
-                $image_path = $product->image_path;
+
+                $image_path = $product->image_path;//画像なしの場合そのまま
             }
 
 

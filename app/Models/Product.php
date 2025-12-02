@@ -39,7 +39,7 @@ class Product extends Model
     public function registProduct($request, $image_path)
     {
         DB::table('products')->insert([
-            'image_file' => $image_path,
+            'image_path' => $image_path,
             'product_name' => $request->product_name,
             'price' => $request->price,
             'stock' => $request->stock,
