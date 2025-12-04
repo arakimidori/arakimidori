@@ -7,6 +7,9 @@ use App\Models\Company;
 use App\Http\Requests\ProductRequest;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
 
 class ProductController extends Controller
 {
@@ -38,7 +41,7 @@ class ProductController extends Controller
         $image_path = null;
 
         if ($image) {
-            $file_name = $image->getClientOriginalName();
+            $file_name = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
             $image->storeAs('public/images', $file_name);
             $image_path = 'storage/images/' . $file_name;
         }
@@ -55,7 +58,9 @@ class ProductController extends Controller
 
         } catch (\Exception $e) {
             DB::rollBack();
-            return back();
+            Log::error('商品登録エラー: ' . $e->getMessage());
+            Log::error($e->getTraceAsString());
+            return back()->withErrors(['error' => '商品の登録に失敗しました。'])->withInput();
         }
 
         return redirect()->route('list');
@@ -148,6 +153,10 @@ class ProductController extends Controller
         return view('list', compact('products', 'companies'));
     }
 
-
-
+    public function up()
+    {
+        Schema::table('products', function (Blueprint $table) {
+            $table->renameColumn('img_path', 'image_path');
+        });
+    }
 }

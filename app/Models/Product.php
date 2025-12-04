@@ -45,6 +45,9 @@ class Product extends Model
             'stock' => $request->stock,
             'comment' => $request->comment,
             'company_id' => $request->company_id,
+            'created_at'  => now(),
+            'update_at' => now(),
+
         ]);
     }
 
