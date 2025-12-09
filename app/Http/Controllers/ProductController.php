@@ -37,7 +37,7 @@ class ProductController extends Controller
     public function registSubmit(ProductRequest $request)
     {
 
-        $image = $request->file('image');
+        $image = $request->file('img_path');
         $image_path = null;
 
         if ($image) {
@@ -63,7 +63,7 @@ class ProductController extends Controller
             return back()->withErrors(['error' => '商品の登録に失敗しました。'])->withInput();
         }
 
-        return redirect()->route('list');
+        return redirect()->route('regist');
 
 
     }
@@ -94,12 +94,12 @@ class ProductController extends Controller
 
             } else {
 
-                $image_path = $product->image_path;//画像なしの場合そのまま
+                $image_path = $product->img_path;//画像なしの場合そのまま
             }
 
 
             $product->update([
-                'image_path' => $image_path,
+                'img_path' => $image_path,
                 'product_name' => $request->product_name,
                 'price' => $request->price,
                 'stock' => $request->stock,

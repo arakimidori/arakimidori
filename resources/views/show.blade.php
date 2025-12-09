@@ -17,8 +17,8 @@
             <tr>
                 <th>画像</th>
                 <td>
-                    @if ($product->image_path)
-                        <img src="{{ asset('storage/' . $product->image_path) }}" alt="商品画像" style="max-width: 200px;">
+                    @if ($product->img_path)
+                        <img src="{{ asset('storage/' . $product->img_path) }}" alt="商品画像" style="max-width: 200px;">
                     @else
                         画像なし
                     @endif

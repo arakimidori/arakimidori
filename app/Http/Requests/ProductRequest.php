@@ -4,6 +4,8 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Validation\ValidationException;
 
 class ProductRequest extends FormRequest
 {
@@ -20,7 +22,7 @@ class ProductRequest extends FormRequest
     public function rules()
     {
         return [
-            'image_path' => 'nullable|image|max:2048',
+            'img_path' => 'nullable|image|max:2048',
             'product_name' => 'required|max:255',
             'price' => 'required|integer|min:0',
             'stock' => 'required|integer|min:0',
@@ -32,7 +34,7 @@ class ProductRequest extends FormRequest
     public function attributes()
     {
         return [
-            'image' => '画像',
+            'img_path' => '画像',
             'product_name' => '商品名',
             'price' => '価格',
             'stock' => '在庫',
@@ -49,7 +51,7 @@ class ProductRequest extends FormRequest
     public function messages()
     {
         return [
-            'image.image' => ':attributeには画像ファイルを指定してください。',
+            'img_path.image' => ':attributeには画像ファイルを指定してください。',
             'product_name.required' => ':attributeは必須項目です。',
             'product_name.max' => ':attributeは:max字以内で入力してください。',
             'price.required' => ':attributeは必須項目です。',
@@ -57,9 +59,8 @@ class ProductRequest extends FormRequest
             'stock.required' => ':attributeは必須項目です。',
             'stock.integer' => ':attribute には整数を入力してください。',
             'company_id.required' => ':attributeは必須項目です。',
-            'company_id.max' => ':attributeは:max字以内で入力してください。',
-            'comment.string' => ':attributeは:コメントは文字で入力してください。',
-            'comment.max'    => ':attributeは:コメントは1000文字以内で入力してください。',
+            'comment.string' => ':attributeは文字で入力してください。',
+            'comment.max'    => ':attributeは1000文字以内で入力してください。',
         ];
     }
 
@@ -71,10 +72,10 @@ class ProductRequest extends FormRequest
 
 
 
-    public function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)
+    public function failedValidation($validator)
     {
         Log::error('Validation errors:', $validator->errors()->toArray());
-        parent::failedValidation($validator);
+        throw new ValidationException($validator);
     }
 
 }

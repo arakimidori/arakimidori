@@ -20,11 +20,9 @@
 
                 <div class="form-group">
                     <label for="company_id">メーカー名<span style="color: red;">※</span></label>
-                    <select name="company_id" id="company_id" class="form-control" value="{{ old('company_name') }}">
+                    <select name="company_id" id="company_id" class="form-control">
                         <option value="">選択してください</option>
-                        @if ($errors->has('company_name'))
-                            <p>{{ $errors->first('company_name') }}</p>
-                        @endif
+
                         @foreach ($companies as $company)
                             <option value="{{ $company->id }}" {{ old('company_id') == $company->id ? 'selected' : '' }}>
                                 {{ $company->company_name }}
@@ -63,8 +61,8 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="image">商品画像</label>
-                    <input type="file" class="form-control" id="image" name="image">
+                    <label for="iae">商品画像</label>
+                    <input type="file" class="form-control" id="img_path" name="img_path">
                 </div>
 
                 <button type="submit" class="btn btn-default">登録</button>

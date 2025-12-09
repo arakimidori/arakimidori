@@ -424,15 +424,15 @@
                     <h1>商品一覧画面</h1>
                     <form action="{{ route('list') }}" method="GET" class="mb-4">
                         <div style="margin-bottom: 10px;">
-                            <label for="product_name">商品名：</label>
                             <input type="text" name="product_name" id="product_name"
-                                value="{{ request('product_name') }}">
+                                value="{{ request('product_name') }}" placeholder="検索キーワード"
+                                style="padding: 5px; width: 200px;>
                         </div>
 
-                        <div style="margin-bottom: 10px;">
-                            <label for="company_id">メーカー名：</label>
-                            <select name="company_id" id="company_id">
-                                <option value="">すべて</option>
+                        <div style="margin-bottom:
+                                10px;">
+                            <select name="company_id" id="company_id" style="padding: 5px; width: 200px;">
+                                <option value="" disabled selected hidden>メーカー名</option>
                                 @foreach ($companies as $company)
                                     <option value="{{ $company->id }}"
                                         @if (request('company_id') == $company->id) selected @endif>
@@ -461,8 +461,8 @@
                             <tr>
                                 <td>{{ $product->id }}</td>
                                 <td>
-                                    @if ($product->image_path)
-                                        <img src="{{ asset($product->image_path) }}" alt="商品画像" width="80">
+                                    @if ($product->img_path)
+                                        <img src="{{ asset($product->img_path) }}" alt="商品画像" width="80">
                                     @else
                                         画像なし
                                     @endif

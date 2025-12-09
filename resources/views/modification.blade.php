@@ -29,7 +29,8 @@
                         value="{{ old('company_id', $product->company_id) }}">
                         <option value="">選択してください</option>
                         @foreach ($companies as $company)
-                            <option value="{{ $company->id }}" {{ old('company_id') == $company->id ? 'selected' : '' }}>
+                            <option value="{{ $company->id }}"
+                                {{ old('company_id', $product->company_id) == $company->id ? 'selected' : '' }}>
                                 {{ $company->company_name }}
                             </option>
                         @endforeach
@@ -66,9 +67,9 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="image">商品画像</label>
-                    @if ($product->image_path)
-                        <img src="{{ asset($product->image_path) }}" width="150">
+                    <label for="img">商品画像</label>
+                    @if ($product->img_path)
+                        <img src="{{ asset($product->img_path) }}" width="150">
                     @else
                         <p>画像なし</p>
                     @endif

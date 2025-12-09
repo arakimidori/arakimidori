@@ -34,5 +34,3 @@ Route::get('/show/{id}', [App\Http\Controllers\ProductController::class, 'show']
 //詳細画面
 Route::delete('/products/{id}', [App\Http\Controllers\ProductController::class, 'destroy'])->name('destroy');
 //削除ボタン
-//Route::get('/products', [App\Http\Controllers\ProductController::class, 'index'])->name('search');
-//検索

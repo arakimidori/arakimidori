@@ -16,7 +16,7 @@ class Product extends Model
             'stock',
             'comment',
             'company_id',
-            'image_path',
+            'img_path',
         ];
 
     public function getList()
@@ -38,15 +38,16 @@ class Product extends Model
 
     public function registProduct($request, $image_path)
     {
-        DB::table('products')->insert([
-            'image_path' => $image_path,
+        return Product::create([
+            'img_path' => $image_path,
             'product_name' => $request->product_name,
             'price' => $request->price,
             'stock' => $request->stock,
             'comment' => $request->comment,
             'company_id' => $request->company_id,
             'created_at'  => now(),
-            'update_at' => now(),
+            'updated_at' => now(),
+
 
         ]);
     }
