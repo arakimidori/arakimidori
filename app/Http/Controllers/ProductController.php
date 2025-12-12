@@ -86,8 +86,6 @@ class ProductController extends Controller
             if ($request->hasFile('image')) {
 
                 $image = $request->file('image');
-
-
                 $file_name = $image->getClientOriginalName();
                 $image->storeAs('public/images', $file_name);
                 $image_path = 'storage/images/' . $file_name;
@@ -97,18 +95,10 @@ class ProductController extends Controller
                 $image_path = $product->img_path;//画像なしの場合そのまま
             }
 
-
-            $product->update([
-                'img_path' => $image_path,
-                'product_name' => $request->product_name,
-                'price' => $request->price,
-                'stock' => $request->stock,
-                'company_id' => $request->company_id,
-                'comment' => $request->comment,
-            ]);
-
+            $product->updateProduct($request, $image_path);
 
             DB::commit();
+
         } catch (\Exception $e) {
             DB::rollback();
             return back();

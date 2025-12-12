@@ -63,4 +63,16 @@ class Product extends Model
         return $product;
     }
 
+    public function updateProduct($request, $image_path)
+    {
+        return $this->update([
+            'img_path' => $image_path,
+            'product_name' => $request->product_name,
+            'price' => $request->price,
+            'stock' => $request->stock,
+            'company_id' => $request->company_id,
+            'comment' => $request->comment,
+        ]);
+    }
+
 }
