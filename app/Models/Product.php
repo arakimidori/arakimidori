@@ -75,4 +75,42 @@ class Product extends Model
         ]);
     }
 
+    public function ajaxSearch(array $params)
+    {
+        $query = DB::table('products')
+            ->join('companies', 'products.company_id', '=', 'companies.id')
+            ->select('products.*', 'companies.company_name');
+
+        // 商品名検索
+        if (!empty($params['word'])) {
+            $query->where('products.product_name', 'like', '%' . $params['word'] . '%');
+        }
+
+        // 会社検索
+        if (!empty($params['company_id'])) {
+            $query->where('products.company_id', $params['company_id']);
+        }
+
+        // 価格下限
+        if (!empty($params['price_min'])) {
+            $query->where('products.price', '>=', $params['price_min']);
+        }
+
+        // 価格上限
+        if (!empty($params['price_max'])) {
+            $query->where('products.price', '<=', $params['price_max']);
+        }
+
+        // 在庫下限
+        if (!empty($params['stock_min'])) {
+            $query->where('products.stock', '>=', $params['stock_min']);
+        }
+
+        //在庫上限
+        if (!empty($params['stock_max'])) {
+            $query->where('products.stock', '<=', $params['stock_max']);
+        }
+
+        return $query->get();
+    }
 }

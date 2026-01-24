@@ -16,7 +16,6 @@ class ProductController extends Controller
     public function showList()
     {
 
-
         $products = Product::with('company')->get();
         $companies = Company::all();
 
@@ -123,24 +122,39 @@ class ProductController extends Controller
         return redirect()->route('list')->with('success', '商品を削除しました。');
     }
 
-    public function index(Request $request)
+    public function index()
     {
-        $query = Product::with('company');
-
-        // 検索フォーム商品名
-        if ($request->filled('product_name')) {
-            $query->where('product_name', 'like', '%' . $request->product_name . '%');
-        }
-
-        // 検索フォーム
-        if ($request->filled('company_id')) {
-            $query->where('company_id', $request->company_id);
-        }
-        $products = $query->get();
-
+        $products = Product::with('company')->get();
         $companies = Company::all();
 
         return view('list', compact('products', 'companies'));
+    }
+
+    public function ajaxSearch(Request $request)
+    {
+        $products = Product::with('company')
+        ->when($request->filled('word'), function ($q) use ($request) {
+            $q->where('product_name', 'like', '%' . $request->word . '%');
+        })
+        ->when($request->filled('company_id'), function ($q) use ($request) {
+            $q->where('company_id', $request->company_id);
+        })
+        ->when($request->filled('price_min'), function ($q) use ($request) {
+            $q->where('price', '>=', $request->price_min);
+        })
+        ->when($request->filled('price_max'), function ($q) use ($request) {
+            $q->where('price', '<=', $request->price_max);
+        })
+        ->when($request->filled('stock_min'), function ($q) use ($request) {
+            $q->where('stock', '>=', $request->stock_min);
+        })
+        ->when($request->filled('stock_max'), function ($q) use ($request) {
+            $q->where('stock', '<=', $request->stock_max);
+        })
+        ->get();
+
+
+        return response()->json($products);
     }
 
     public function up()
