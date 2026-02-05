@@ -78,8 +78,8 @@ class Product extends Model
     public function ajaxSearch(array $params)
     {
         $query = DB::table('products')
-            ->join('companies', 'products.company_id', '=', 'companies.id')
-            ->select('products.*', 'companies.company_name');
+        ->join('companies', 'products.company_id', '=', 'companies.id')
+        ->select('products.*', 'companies.company_name');
 
         // 商品名検索
         if (!empty($params['word'])) {

@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\Company;
+use Illuminate\Http\Request;
 use App\Http\Requests\ProductRequest;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
@@ -122,14 +122,25 @@ class ProductController extends Controller
         return redirect()->route('list')->with('success', '商品を削除しました。');
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::with('company')->get();
+        $query = Product::with('company');
+
+        // 検索フォーム商品名
+        if ($request->filled('product_name')) {
+            $query->where('product_name', 'like', '%' . $request->product_name . '%');
+        }
+
+        // 検索フォーム
+        if ($request->filled('company_id')) {
+            $query->where('company_id', $request->company_id);
+        }
+        $products = $query->get();
+
         $companies = Company::all();
 
         return view('list', compact('products', 'companies'));
     }
-
     public function ajaxSearch(Request $request)
     {
         $products = Product::with('company')
